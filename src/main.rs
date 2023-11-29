@@ -159,7 +159,7 @@ fn to_encoded_label(input_string: &String) -> Vec<u8> {
 
 fn main() {
     let udp_socket = UdpSocket::bind("127.0.0.1:2053").expect("Failed to bind to address");
-    let mut buf = [0; 512];
+    let mut buf = [0; 4096];
 
     let response_body = DNSBody {
         header: DNSHeader {
