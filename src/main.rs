@@ -1,9 +1,35 @@
 use std::net::UdpSocket;
 
-use nom::AsBytes;
+#[derive(Debug)]
+struct DNSBody {
+    header: DNSHeader,
+    questions: Vec<DNSQuestion>,
+    // more to come...
+}
+impl DNSBody {
+    fn to_bytes(&self) -> Vec<u8> {
+        let mut byte_array = Vec::new();
+        // add header as vec
+        byte_array.append(&mut self.header.to_bytes().to_vec());
+        // add questions
+        byte_array.append(
+            &mut self
+                .questions
+                .iter()
+                .map(|q| q.to_bytes())
+                .reduce(|acc, e| {
+                    let mut c = acc;
+                    c.extend(e.iter());
+                    c
+                })
+                .expect("Unable to convert questions to bytearray"),
+        );
+        byte_array
+    }
+}
 
-#[derive(Default)]
-pub struct DNSHeader {
+#[derive(Default, Debug)]
+struct DNSHeader {
     /// 16 bits
     /// A random ID assigned to query packets. Response packets must reply with the same ID. Expected: 1234.
     id: u16,
@@ -58,10 +84,10 @@ pub struct DNSHeader {
 }
 
 impl DNSHeader {
-    pub fn to_bytearray(&self) -> [u8; 12] {
+    fn to_bytes(&self) -> [u8; 12] {
         let mut byte_array = [0; 12];
         // convert header as two bytes
-        byte_array[..2].clone_from_slice(&self.id.to_be_bytes());
+        byte_array[..2].copy_from_slice(&self.id.to_be_bytes());
 
         // convert {qr, opcode, aa, tc, rd} into 1 byte
         let qr_opcode_aa_tc_rd =
@@ -73,30 +99,80 @@ impl DNSHeader {
         byte_array[3] = ra_z_rcode;
 
         // convert qdcount into 2 bytes
-        byte_array[4..6].clone_from_slice(&self.qdcount.to_be_bytes());
+        byte_array[4..6].copy_from_slice(&self.qdcount.to_be_bytes());
 
         // convert ancount into 2 bytes
-        byte_array[4..6].clone_from_slice(&self.ancount.to_be_bytes());
+        byte_array[6..8].copy_from_slice(&self.ancount.to_be_bytes());
 
         // convert nscount into 2 bytes
-        byte_array[4..6].clone_from_slice(&self.nscount.to_be_bytes());
+        byte_array[8..10].copy_from_slice(&self.nscount.to_be_bytes());
 
         // convert arcount into 2 bytes
-        byte_array[4..6].clone_from_slice(&self.arcount.to_be_bytes());
+        byte_array[10..12].copy_from_slice(&self.arcount.to_be_bytes());
 
-        // println!("byte_array is {:?}", byte_array);
+        println!("byte_array is {:?}", byte_array);
         byte_array
     }
+}
+
+#[derive(Debug)]
+struct DNSQuestion {
+    /// A domain name, represented as a sequence of "labels". Labels are encoded as
+    /// <length><content>, where <length> is a single byte that specifies the length of the label,
+    /// and <content> is the actual content of the label. The sequence of labels is terminated by a
+    /// null byte (\x00). google.com is encoded as \x06google\x03com\x00
+    domain_name: String,
+
+    /// 2-byte int; the type of record (1 for an A record, 5 for a CNAME record etc.)
+    query_type: u16,
+
+    /// 2-byte int; usually set to 1
+    query_class: u16,
+}
+
+impl DNSQuestion {
+    fn to_bytes(&self) -> Vec<u8> {
+        let mut byte_array = Vec::new();
+
+        // convert domain name into byte_array
+        byte_array.append(&mut to_encoded_label(&self.domain_name));
+
+        // append query type and query class to byte array
+        byte_array.extend_from_slice(&self.query_type.to_be_bytes());
+        byte_array.extend_from_slice(&self.query_class.to_be_bytes());
+
+        byte_array
+    }
+}
+
+const NULL_BYTE: &str = "\x00";
+
+fn to_encoded_label(input_string: &String) -> Vec<u8> {
+    let mut encoded_label = input_string
+        .split(".")
+        .map(|s| s.len().to_string() + s)
+        .reduce(|acc, s| acc + &s)
+        .expect("could not convert domain name into encoded label");
+    encoded_label.push_str(NULL_BYTE);
+    encoded_label.into_bytes()
 }
 
 fn main() {
     let udp_socket = UdpSocket::bind("127.0.0.1:2053").expect("Failed to bind to address");
     let mut buf = [0; 512];
 
-    let header = DNSHeader {
-        id: 1234,
-        qr: 1,
-        ..Default::default()
+    let response_body = DNSBody {
+        header: DNSHeader {
+            id: 1234,
+            qr: 1,
+            qdcount: 1,
+            ..Default::default()
+        },
+        questions: vec![DNSQuestion {
+            domain_name: "codecrafters.io".to_string(),
+            query_type: 1,
+            query_class: 1,
+        }],
     };
 
     loop {
@@ -104,7 +180,7 @@ fn main() {
             Ok((size, source)) => {
                 let _received_data = String::from_utf8_lossy(&buf[0..size]);
                 println!("Received {} bytes from {}", size, source);
-                let response = header.to_bytearray();
+                let response = response_body.to_bytes();
                 udp_socket
                     .send_to(&response, source)
                     .expect("Failed to send response");
