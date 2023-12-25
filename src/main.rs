@@ -1,5 +1,7 @@
 use std::net::UdpSocket;
 
+use nom::AsBytes;
+
 #[derive(Debug)]
 struct DNSBody {
     header: DNSHeader,
@@ -145,44 +147,43 @@ impl DNSQuestion {
     }
 }
 
-const NULL_BYTE: &str = "\x00";
-
 fn to_encoded_label(input_string: &String) -> Vec<u8> {
-    let mut encoded_label = input_string
-        .split(".")
-        .map(|s| s.len().to_string() + s)
-        .reduce(|acc, s| acc + &s)
-        .expect("could not convert domain name into encoded label");
-    encoded_label.push_str(NULL_BYTE);
-    encoded_label.into_bytes()
+    let mut encoded_label: Vec<u8> = Vec::new();
+    for word in input_string.split(".") {
+        encoded_label.push(word.chars().count().try_into().expect("Word is too long"));
+        encoded_label.extend(word.to_string().as_bytes());
+    }
+    encoded_label.push(0);
+    encoded_label
 }
 
 fn main() {
     let udp_socket = UdpSocket::bind("127.0.0.1:2053").expect("Failed to bind to address");
-    let mut buf = [0; 4096];
-
-    let response_body = DNSBody {
-        header: DNSHeader {
-            id: 1234,
-            qr: 1,
-            qdcount: 1,
-            ..Default::default()
-        },
-        questions: vec![DNSQuestion {
-            domain_name: "codecrafters.io".to_string(),
-            query_type: 1,
-            query_class: 1,
-        }],
-    };
+    let mut buf = [0; 512];
 
     loop {
         match udp_socket.recv_from(&mut buf) {
             Ok((size, source)) => {
                 let _received_data = String::from_utf8_lossy(&buf[0..size]);
                 println!("Received {} bytes from {}", size, source);
+
+                let response_body = DNSBody {
+                    header: DNSHeader {
+                        id: 1234,
+                        qr: 1,
+                        qdcount: 1,
+                        ..Default::default()
+                    },
+                    questions: vec![DNSQuestion {
+                        domain_name: "codecrafters.io".to_string(),
+                        query_type: 1,
+                        query_class: 1,
+                    }],
+                };
                 let response = response_body.to_bytes();
+                let r = response.as_bytes();
                 udp_socket
-                    .send_to(&response, source)
+                    .send_to(r, source)
                     .expect("Failed to send response");
             }
             Err(e) => {
@@ -190,5 +191,17 @@ fn main() {
                 break;
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_to_encoded_label() {
+        let input_string = "google.com".to_string();
+        let expected_vec: Vec<u8> = vec![6, 103, 111, 111, 103, 108, 101, 3, 99, 111, 109, 0];
+        assert_eq!(to_encoded_label(&input_string), expected_vec);
     }
 }
