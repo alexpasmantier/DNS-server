@@ -80,7 +80,43 @@ impl DNSHeader {
         // convert arcount into 2 bytes
         byte_array[10..12].copy_from_slice(&self.arcount.to_be_bytes());
 
-        println!("byte_array is {:?}", byte_array);
+        // println!("byte_array is {:?}", byte_array);
         byte_array
+    }
+
+    pub fn from_bytes(input_bytes: &[u8; 12]) -> Self {
+        // first two bytes
+        let id = (input_bytes[0] as u16) << 8 | (input_bytes[1] as u16);
+        // third byte
+        let qr = (input_bytes[2] as u8) >> 7;
+        let opcode = ((input_bytes[2] as u8) & 0b01111000) >> 3;
+        let aa = ((input_bytes[2] as u8) & 0b00000100) >> 2;
+        let tc = ((input_bytes[2] as u8) & 0b00000010) >> 1;
+        let rd = (input_bytes[2] as u8) & 0b00000001;
+        // fourth byte
+        let ra = (input_bytes[3] as u8) >> 7;
+        let z = ((input_bytes[3] as u8) & 0b01110000) >> 4;
+        let rcode = (input_bytes[3] as u8) & 0b00001111;
+        // and the other eight
+        let qdcount = (input_bytes[4] as u16) << 8 | (input_bytes[5] as u16);
+        let ancount = (input_bytes[6] as u16) << 8 | (input_bytes[7] as u16);
+        let nscount = (input_bytes[8] as u16) << 8 | (input_bytes[9] as u16);
+        let arcount = (input_bytes[10] as u16) << 8 | (input_bytes[11] as u16);
+
+        DNSHeader {
+            id,
+            qr,
+            opcode,
+            aa,
+            tc,
+            rd,
+            ra,
+            z,
+            rcode,
+            qdcount,
+            ancount,
+            nscount,
+            arcount,
+        }
     }
 }

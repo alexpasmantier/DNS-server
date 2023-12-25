@@ -1,4 +1,4 @@
-use crate::utils::label_encoding::to_encoded_label;
+use crate::parsing::label_encoding::{decode_label, encode_label};
 
 #[derive(Debug)]
 pub struct DNSQuestion {
@@ -20,12 +20,26 @@ impl DNSQuestion {
         let mut byte_array = Vec::new();
 
         // convert domain name into byte_array
-        byte_array.append(&mut to_encoded_label(&self.domain_name));
+        byte_array.append(&mut encode_label(&self.domain_name));
 
         // append query type and query class to byte array
         byte_array.extend_from_slice(&self.query_type.to_be_bytes());
         byte_array.extend_from_slice(&self.query_class.to_be_bytes());
 
         byte_array
+    }
+
+    pub fn from_bytes(input_bytes: &[u8]) -> Self {
+        let mut parts = input_bytes.splitn(2, |b| *b == 0_u8);
+        let encoded_label = parts.next().unwrap();
+        let remainder = parts.next().unwrap();
+        let domain_name = decode_label(encoded_label);
+        let query_type = (remainder[0] as u16) << 8 | remainder[1] as u16;
+        let query_class = (remainder[2] as u16) << 8 | remainder[3] as u16;
+        DNSQuestion {
+            domain_name,
+            query_type,
+            query_class,
+        }
     }
 }
