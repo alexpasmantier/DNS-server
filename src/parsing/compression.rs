@@ -13,17 +13,13 @@ pub fn decompress_domain_name<'a>(
             // fetch length and content in `entire_message`
             let byte_offset = ((compressed_name[counter] as u16 & 0b00111111) << 8)
                 | compressed_name[counter + 1] as u16;
-            let decompressed_length = entire_message[byte_offset as usize];
-            let decompressed_content = &entire_message[(byte_offset + 1) as usize
-                ..(byte_offset + 1 + decompressed_length as u16) as usize];
-            decompressed_name.push(decompressed_length);
+            let decompressed_content = entire_message[byte_offset as usize..]
+                .splitn(2, |b| *b == 0_u8)
+                .next()
+                .unwrap();
             decompressed_name.extend_from_slice(decompressed_content);
-            counter += 2;
-            // if the decompressed next byte is 0, we've reached the end
-            if entire_message[(byte_offset + 1 + decompressed_length as u16) as usize + 1] == 0 {
-                decompressed_name.push(0_u8);
-                reached_null_byte = true;
-            }
+            counter += 1;
+            reached_null_byte = true;
         } else {
             // read length and content directly in compressed_name
             let label_length = compressed_name[counter];

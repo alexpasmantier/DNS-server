@@ -1,6 +1,6 @@
 use crate::parsing::label_encoding::{decode_label, encode_label};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct DNSQuestion {
     /// A domain name, represented as a sequence of "labels". Labels are encoded as
     /// <length><content>, where <length> is a single byte that specifies the length of the label,

@@ -1,16 +1,17 @@
 use std::error::Error;
 
-use crate::domain::{body::DNSBody, header::DNSHeader, question::DNSQuestion};
+use crate::domain::{answer::DNSAnswer, body::DNSBody, header::DNSHeader, question::DNSQuestion};
 
 use super::compression::decompress_domain_name;
 
 pub fn parse_body(input: &[u8]) -> Result<DNSBody, Box<dyn Error>> {
     let (header, remainder) = parse_header(input)?;
-    let (questions, _) = parse_questions(remainder, header.qdcount, input)?;
+    let (questions, remainder) = parse_questions(remainder, header.qdcount, input)?;
+    let (answers, _) = parse_answers(remainder, header.ancount)?;
     Ok(DNSBody {
         header,
         questions,
-        ..Default::default()
+        answers,
     })
 }
 
@@ -33,7 +34,7 @@ fn parse_questions<'a>(
     let mut remainder = input;
 
     for _ in 0..count {
-        let (question, r) = parse_question(input, entire_message);
+        let (question, r) = parse_question(remainder, entire_message);
         questions.push(question);
         remainder = r;
     }
@@ -49,5 +50,28 @@ fn parse_question<'a>(input: &'a [u8], entire_message: &[u8]) -> (DNSQuestion, &
     (
         DNSQuestion::from_bytes(&[&decompressed_domain_name, &remainder[..4]].concat()),
         &remainder[4..],
+    )
+}
+
+fn parse_answers(input: &[u8], count: u16) -> Result<(Vec<DNSAnswer>, &[u8]), Box<dyn Error>> {
+    let mut answers = Vec::new();
+    let mut remainder = input;
+
+    for _ in 0..count {
+        let (answer, r) = parse_answer(remainder);
+        answers.push(answer);
+        remainder = r;
+    }
+    Ok((answers, remainder))
+}
+
+fn parse_answer(input: &[u8]) -> (DNSAnswer, &[u8]) {
+    let mut parts = input.splitn(2, |b| *b == 0_u8);
+    let encoded_domain_name = parts.next().unwrap();
+    let remainder = parts.next().unwrap();
+
+    (
+        DNSAnswer::from_bytes(&[encoded_domain_name, &[0_u8], &remainder[..14]].concat()),
+        &remainder[14..],
     )
 }
