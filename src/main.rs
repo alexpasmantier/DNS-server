@@ -21,6 +21,8 @@ fn main() {
                 // println!("Received {} bytes from {}", size, source);
 
                 if let Ok(received_body) = parse_body(rcv) {
+                    // println!("RECEIVED BODY {:?}", received_body);
+
                     let received_header = received_body.header;
                     // println!("RECEIVED HEADER {:?}", received_header);
 
@@ -42,7 +44,7 @@ fn main() {
                                 _ => 4,
                             },
                             qdcount: received_header.qdcount,
-                            ancount: 1,
+                            ancount: answers.len() as u16,
                             nscount: 0,
                             arcount: 0,
                         },

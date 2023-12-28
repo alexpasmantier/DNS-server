@@ -1,25 +1,44 @@
-pub fn decompress_domain_name(compressed_name: &[u8], entire_message: &[u8]) -> Vec<u8> {
-    let decompressed_name: Vec<u8> = Vec::new();
+pub fn decompress_domain_name<'a>(
+    compressed_name: &'a [u8],
+    entire_message: &[u8],
+) -> (Vec<u8>, &'a [u8]) {
+    let mut decompressed_name: Vec<u8> = Vec::new();
 
-    let compressed_length = compressed_name.len();
     let mut counter = 0;
+    let mut reached_null_byte = false;
 
-    while counter + 1 < compressed_length {
+    while !reached_null_byte {
         // if it's a pointer (i.e. the first two bits are 1 1)
         if (compressed_name[counter] & 0b11000000) == 192 {
             // fetch length and content in `entire_message`
-            let byte_offset = ((compressed_name[counter] & 0b00111111) << 8) as u16
+            let byte_offset = ((compressed_name[counter] as u16 & 0b00111111) << 8)
                 | compressed_name[counter + 1] as u16;
             let decompressed_length = entire_message[byte_offset as usize];
-            let decompressed_content = entire_message[(byte_offset + 1) as usize
+            let decompressed_content = &entire_message[(byte_offset + 1) as usize
                 ..(byte_offset + 1 + decompressed_length as u16) as usize];
+            decompressed_name.push(decompressed_length);
+            decompressed_name.extend_from_slice(decompressed_content);
+            counter += 2;
+            // if the decompressed next byte is 0, we've reached the end
+            if entire_message[(byte_offset + 1 + decompressed_length as u16) as usize + 1] == 0 {
+                decompressed_name.push(0_u8);
+                reached_null_byte = true;
+            }
         } else {
             // read length and content directly in compressed_name
+            let label_length = compressed_name[counter];
+            decompressed_name.push(label_length);
+            decompressed_name.extend_from_slice(
+                &compressed_name[(counter + 1) as usize..counter + 1 + label_length as usize],
+            );
+            counter += label_length as usize + 1;
+            if compressed_name[counter] == 0 {
+                reached_null_byte = true;
+            }
         }
-        // push to decompressed_name
     }
-
-    decompressed_name
+    decompressed_name.push(0);
+    return (decompressed_name, &compressed_name[counter + 1..]);
 }
 
 // #[cfg(test)]

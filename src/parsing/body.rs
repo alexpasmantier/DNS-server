@@ -43,18 +43,11 @@ fn parse_questions<'a>(
 /// This needs to take in a reference to the entire message bytearray in order to decompress domain
 /// names
 fn parse_question<'a>(input: &'a [u8], entire_message: &[u8]) -> (DNSQuestion, &'a [u8]) {
-    // determine question boundaries
-    let end_of_domain_name_idx = input
-        .iter()
-        .position(|b| *b == 0_u8)
-        .expect("input is not a valid question");
-    let end_of_question_idx = end_of_domain_name_idx + 4;
     // decompress domain name
-    let decompressed_domain_name =
-        decompress_domain_name(&input[..end_of_domain_name_idx + 1], entire_message);
+    let (decompressed_domain_name, remainder) = decompress_domain_name(&input, entire_message);
     // build question and return
     (
-        DNSQuestion::from_bytes(&input[..end_of_question_idx + 1]),
-        &input[end_of_question_idx + 1..],
+        DNSQuestion::from_bytes(&[&decompressed_domain_name, &remainder[..4]].concat()),
+        &remainder[4..],
     )
 }
