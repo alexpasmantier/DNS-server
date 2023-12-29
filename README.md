@@ -1,9 +1,3 @@
-[RFC Home] [TEXT|PDF|HTML] [Tracker] [IPR] [Errata] [Info page]         
-                                                                        
-Updated by: 1101, 1183, 1348, 1876, 1982, 1995, 1996,  INTERNET STANDARD
-            2065, 2136, 2181, 2137, 2308, 2535, 2673,                   
-            2845, 3425, 3658, 4033, 4034, 4035, 4343,                   
-            5936, 5966, 6604, 7766, 8482, 8490, 8767        Errata Exist
 Network Working Group                                     P. Mockapetris
 Request for Comments: 1035                                           ISI
                                                            November 1987
@@ -56,7 +50,7 @@ primarily pedagogical.  Distribution of this memo is unlimited.
 
 
 Mockapetris                                                     [Page 1]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -112,7 +106,7 @@ RFC 1035        Domain Implementation and Specification    November 1987
 
 
 Mockapetris                                                     [Page 2]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -168,7 +162,7 @@ zones are up to date, and if not, obtains a new copy of updated zones
 
 
 Mockapetris                                                     [Page 3]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -224,7 +218,7 @@ servers and the corresponding responses have a standard format described
 
 
 Mockapetris                                                     [Page 4]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -280,7 +274,7 @@ to check that an existing copy has not changed.  The messages sent for
 
 
 Mockapetris                                                     [Page 5]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -336,7 +330,7 @@ local implementor.
 
 
 Mockapetris                                                     [Page 6]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -392,7 +386,7 @@ existing object can be expressed as a domain name with minimal changes.
 
 
 Mockapetris                                                     [Page 7]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -448,7 +442,7 @@ document is resolved to the octet level.  Whenever a diagram shows a
 
 
 Mockapetris                                                     [Page 8]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -504,7 +498,7 @@ insensitive manner.
 
 
 Mockapetris                                                     [Page 9]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -560,7 +554,7 @@ with zero parity.  Non-alphabetic codes must match exactly.
 
 
 Mockapetris                                                    [Page 10]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -616,7 +610,7 @@ RDLENGTH        an unsigned 16 bit integer that specifies the length in
 
 
 Mockapetris                                                    [Page 11]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -672,7 +666,7 @@ following QTYPEs are defined:
 
 
 Mockapetris                                                    [Page 12]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -728,7 +722,7 @@ length (including the length octet).
 
 
 Mockapetris                                                    [Page 13]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -784,7 +778,7 @@ MADNAME         A <domain-name> which specifies a host which has the
 
 
 Mockapetris                                                    [Page 14]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -840,7 +834,7 @@ preference of 10.
 
 
 Mockapetris                                                    [Page 15]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -896,7 +890,7 @@ with a mailing list.
 
 
 Mockapetris                                                    [Page 16]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -952,7 +946,7 @@ or less.
 
 
 Mockapetris                                                    [Page 17]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1008,7 +1002,7 @@ description of the IN-ADDR.ARPA domain for an example.
 
 
 Mockapetris                                                    [Page 18]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1064,7 +1058,7 @@ EXPIRE          A 32 bit time value that specifies the upper limit on
 
 
 Mockapetris                                                    [Page 19]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1120,7 +1114,7 @@ records.
 
 
 Mockapetris                                                    [Page 20]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1176,7 +1170,7 @@ or decimal numbers.
 
 
 Mockapetris                                                    [Page 21]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1232,7 +1226,7 @@ ISI gateway between net 10 and 26, an MIT gateway from net 10 to MIT's
 
 
 Mockapetris                                                    [Page 22]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1288,7 +1282,7 @@ Several cautions apply to the use of these services:
 
 
 Mockapetris                                                    [Page 23]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1344,7 +1338,7 @@ a QTYPE of MF, MD, or MAILA (which matched both).  The redesigned
 
 
 Mockapetris                                                    [Page 24]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1400,7 +1394,7 @@ question.
 
 
 Mockapetris                                                    [Page 25]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1456,7 +1450,7 @@ AA              Authoritative Answer - this bit is valid in responses,
 
 
 Mockapetris                                                    [Page 26]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1512,7 +1506,7 @@ RCODE           Response code - this 4 bit field is set as part of
 
 
 Mockapetris                                                    [Page 27]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1568,7 +1562,7 @@ QTYPE           a two octet code which specifies the type of the query.
 
 
 Mockapetris                                                    [Page 28]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1624,7 +1618,7 @@ TTL             a 32 bit unsigned integer that specifies the time
 
 
 Mockapetris                                                    [Page 29]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1680,7 +1674,7 @@ length field (such as the RDATA section of an RR), and compression is
 
 
 Mockapetris                                                    [Page 30]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1736,7 +1730,7 @@ ARPA being the last label in the string at 20.  The root domain name is
 
 
 Mockapetris                                                    [Page 31]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1792,7 +1786,7 @@ message is prefixed with a two byte length field which gives the message
 
 
 Mockapetris                                                    [Page 32]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1848,7 +1842,7 @@ The following entries are defined:
 
 
 Mockapetris                                                    [Page 33]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1904,7 +1898,7 @@ error when no origin is available.
 
 
 Mockapetris                                                    [Page 34]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -1960,7 +1954,7 @@ insuring that the file is syntactically correct:
 
 
 Mockapetris                                                    [Page 35]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2016,7 +2010,7 @@ person mailbox "Action.domains@E.ISI.EDU".
 
 
 Mockapetris                                                    [Page 36]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2072,7 +2066,7 @@ to traverse the tree using case-insensitive label comparisons; and that
 
 
 Mockapetris                                                    [Page 37]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2128,7 +2122,7 @@ information which a name server should save across system crashes
 
 
 Mockapetris                                                    [Page 38]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2184,7 +2178,7 @@ zone within the its expiration parameter.  In this case, the name server
 
 
 Mockapetris                                                    [Page 39]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2240,7 +2234,7 @@ When a name server processes an inverse query, it either returns:
 
 
 Mockapetris                                                    [Page 40]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2296,7 +2290,7 @@ this query might be:
 
 
 Mockapetris                                                    [Page 41]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2352,7 +2346,7 @@ been deleted.  Redesigned services may become available in the future.
 
 
 Mockapetris                                                    [Page 42]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2408,7 +2402,7 @@ typically contain:
 
 
 Mockapetris                                                    [Page 43]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2464,7 +2458,7 @@ transmission to some other server, but may be a temporary error to the
 
 
 Mockapetris                                                    [Page 44]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2520,7 +2514,7 @@ Some fine points:
 
 
 Mockapetris                                                    [Page 45]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2576,7 +2570,7 @@ a request identifier of some sort.  This step has several fine points:
 
 
 Mockapetris                                                    [Page 46]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2632,7 +2626,7 @@ subject to change.
 
 
 Mockapetris                                                    [Page 47]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2688,7 +2682,7 @@ Several outcomes are possible for this query:
 
 
 Mockapetris                                                    [Page 48]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2744,7 +2738,7 @@ reported to a person other than the one who sends a message to the list.
 
 
 Mockapetris                                                    [Page 49]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2800,7 +2794,7 @@ New fields may be added to this RR in the future.
 
 
 Mockapetris                                                    [Page 50]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2856,7 +2850,7 @@ RFC 1035        Domain Implementation and Specification    November 1987
 
 
 Mockapetris                                                    [Page 51]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2912,7 +2906,7 @@ RFC 1035        Domain Implementation and Specification    November 1987
 
 
 Mockapetris                                                    [Page 52]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -2968,7 +2962,7 @@ RFC 1035        Domain Implementation and Specification    November 1987
 
 
 Mockapetris                                                    [Page 53]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -3024,7 +3018,7 @@ Index
 
 
 Mockapetris                                                    [Page 54]
-
+
 RFC 1035        Domain Implementation and Specification    November 1987
 
 
@@ -3080,3 +3074,4 @@ RFC 1035        Domain Implementation and Specification    November 1987
 
 
 Mockapetris                                                    [Page 55]
+
