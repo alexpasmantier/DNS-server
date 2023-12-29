@@ -46,14 +46,6 @@ primarily pedagogical.  Distribution of this memo is unlimited.
           3.2.2. TYPE values                                         12
           3.2.3. QTYPE values                                        12
           3.2.4. CLASS values                                        13
-
-
-
-Mockapetris                                                     [Page 1]
-
-RFC 1035        Domain Implementation and Specification    November 1987
-
-
           3.2.5. QCLASS values                                       13
       3.3. Standard RRs                                              13
           3.3.1. CNAME RDATA format                                  14
@@ -99,17 +91,6 @@ RFC 1035        Domain Implementation and Specification    November 1987
           6.4.1. The contents of inverse queries and responses       40
           6.4.2. Inverse query and response example                  41
           6.4.3. Inverse query processing                            42
-
-
-
-
-
-
-Mockapetris                                                     [Page 2]
-
-RFC 1035        Domain Implementation and Specification    November 1987
-
-
       6.5. Completion queries and responses                          42
   7. RESOLVER IMPLEMENTATION                                         43
       7.1. Transforming a user request into a query                  43
